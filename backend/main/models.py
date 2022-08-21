@@ -40,8 +40,28 @@ class BoardData(models.Model):
 
     @receiver(post_save, sender=Board)
     def create_board_data(sender, instance, created, **kwargs):
+        data = {
+            'x': {
+                'black': [],
+                'red': [],
+                'green': [],
+                'blue': [],
+                'yellow': [],
+                'orange': [],
+                'purple': []
+            },
+            'y': {
+                'black': [],
+                'red': [],
+                'green': [],
+                'blue': [],
+                'yellow': [],
+                'orange': [],
+                'purple': []
+            }
+        }
         if created:
-            BoardData.objects.create(board=instance, data={})
+            BoardData.objects.create(board=instance, data=data)
 
     def __str__(self):
         return f'{self.board.name}'
