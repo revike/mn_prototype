@@ -29,6 +29,7 @@
 ```
 * Python 3.10
 * Django 4.1
+* Postgresql
 ```
 ```
 * Docker
@@ -67,4 +68,4 @@ docker-compose up -d --build
 
 По умолчанию есть 2 пользователя:
 1. admin admin
-2. admin1 admin2
+2. admin1 admin1
