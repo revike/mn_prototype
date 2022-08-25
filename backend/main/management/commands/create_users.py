@@ -13,3 +13,6 @@ class Command(BaseCommand):
                     username=admin, password=admin,
                     last_name=admin, first_name=admin
                 )
+        if not User.objects.filter(is_active=True, is_staff=False,
+                                   is_superuser=False):
+            User.objects.create_user(username='user', password='user')
