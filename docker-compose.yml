@@ -1,6 +1,12 @@
 version: "3.3"
 
 services:
+  redis:
+    image: avalanche208/unifi5.0.6beta
+    container_name: redis
+    ports:
+      - 6379:6379
+
   db:
     image: postgres:latest
     container_name: mn_prototype_db
