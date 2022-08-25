@@ -19,6 +19,9 @@ class Board(models.Model):
                                    verbose_name='группа')
     name = models.CharField(max_length=120, verbose_name='название')
     description = models.TextField(blank=True, verbose_name='описание')
+
+    created = models.DateTimeField(auto_now_add=True, verbose_name='создание')
+    updated = models.DateTimeField(auto_now=True, verbose_name='обновление')
     is_active = models.BooleanField(default=True, db_index=True,
                                     verbose_name='активна')
 
@@ -37,6 +40,8 @@ class BoardData(models.Model):
     board = models.OneToOneField(Board, on_delete=models.CASCADE,
                                  verbose_name='доска')
     data = models.JSONField(verbose_name='данные')
+    user_update = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    updated = models.DateTimeField(auto_now=True, verbose_name='обновление')
 
     @receiver(post_save, sender=Board)
     def create_board_data(sender, instance, created, **kwargs):

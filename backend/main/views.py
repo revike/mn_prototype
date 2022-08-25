@@ -1,10 +1,7 @@
 from rest_framework import generics, status
-from rest_framework.generics import get_object_or_404
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from main.models import Board, BoardData
-from main.permissions import BoardDataListOnly
 from main.serializers import BoardModelSerializer, BoardDataModelSerializer
 
 
@@ -47,7 +44,7 @@ class BoardDetailApiView(generics.RetrieveAPIView, generics.UpdateAPIView,
             status=status.HTTP_403_FORBIDDEN,
             data={"detail": "У вас недостаточно прав "
                             "для выполнения данного действия."})
-    
+
     def update(self, request, *args, **kwargs):
         user = self.request.user
         pk = self.kwargs['pk']
@@ -60,11 +57,10 @@ class BoardDetailApiView(generics.RetrieveAPIView, generics.UpdateAPIView,
                             "для выполнения данного действия."})
 
 
-class BoardDataListApiView(generics.RetrieveAPIView, generics.UpdateAPIView):
-    """ApiView для списка данных доски"""
+class BoardDataDetailApiView(generics.RetrieveAPIView, generics.UpdateAPIView):
+    """ApiView для данных доски"""
     queryset = BoardData.objects.all()
     serializer_class = BoardDataModelSerializer
-    permission_classes = [IsAuthenticated, BoardDataListOnly]
 
     def get_queryset(self):
         user = self.request.user
@@ -72,22 +68,7 @@ class BoardDataListApiView(generics.RetrieveAPIView, generics.UpdateAPIView):
         return BoardData.objects.filter(board=board, board__group=user,
                                         board__is_active=True)
 
-    # def perform_create(self, serializer):
-    #     board = Board.objects.get(id=self.kwargs['pk'])
-    #     serializer.save(board=board)
-
-
-# class BoardDataDetailApiView(generics.RetrieveAPIView, generics.UpdateAPIView):
-#     """ApiView для данных доски"""
-#     queryset = BoardData.objects.all()
-#     serializer_class = BoardDataModelSerializer
-#
-#     def get_object(self):
-#         user = self.request.user
-#         board = self.kwargs['pk']
-#         board_data = {self.lookup_field: self.kwargs['pk_id']}
-#         obj = get_object_or_404(self.queryset.filter(
-#             id=board_data['pk'], board=board, board__group=user,
-#             board__is_active=True), **board_data)
-#         self.check_object_permissions(self.request, obj)
-#         return obj
+    def perform_update(self, serializer):
+        user = self.request.user
+        serializer.validated_data['user_update'] = user
+        serializer.save()

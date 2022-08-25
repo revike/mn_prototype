@@ -19,13 +19,15 @@ class BoardModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Board
-        fields = ['id', 'author', 'group', 'name', 'description']
+        fields = ['id', 'author', 'group', 'name', 'description', 'created',
+                  'updated']
 
 
 class BoardDataModelSerializer(serializers.ModelSerializer):
     """Сериализатор данных доски"""
 
     board = BoardModelSerializer(read_only=True)
+    user_update = AuthorModelSerializer(read_only=True)
 
     class Meta:
         model = BoardData
