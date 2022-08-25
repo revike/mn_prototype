@@ -14,17 +14,26 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: mn_prototype
+    container_name: mn_prototype_web
     volumes:
       - .:/code
     command: ./docker_commands.sh
     env_file:
       - .env
     restart: unless-stopped
-    ports:
-      - 8000:8000
+#    ports:
+#      - 8000:8000
+    expose:
+      - 8080
     depends_on:
       - db
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 8000:80
+    depends_on:
+      - web
 
 volumes:
   pg_data:
