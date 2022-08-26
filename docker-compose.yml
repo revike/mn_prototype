@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   redis:
-    image: avalanche208/unifi5.0.6beta
+    image: redis:5
     container_name: redis
     ports:
       - 6379:6379
@@ -27,10 +27,8 @@ services:
     env_file:
       - .env
     restart: unless-stopped
-#    ports:
-#      - 8000:8000
     expose:
-      - 8080
+      - 8000
     depends_on:
       - db
 
@@ -40,6 +38,7 @@ services:
       - 8000:80
     depends_on:
       - web
+
 
 volumes:
   pg_data:

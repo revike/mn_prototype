@@ -5,5 +5,6 @@ cd backend
 
 python3 manage.py migrate
 python3 manage.py create_users
+python3 manage.py collectstatic --noinput
 #python3 manage.py runserver 0.0.0.0:8000
-gunicorn backend.wsgi -b 0.0.0.0:8080
+gunicorn backend.wsgi -b 0.0.0.0:8000 --reload

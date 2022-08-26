@@ -22,3 +22,17 @@ class BoardDataConsumerDetail(GenericAsyncAPIConsumer, RetrieveModelMixin,
         board = self.scope['url_route']['kwargs']['pk']
         return BoardData.objects.filter(board=board, board__group=user,
                                         board__is_active=True)
+
+
+"""
+const ws = new WebSocket("ws://localhost:8000/ws/boards/1/view/")
+ws.onopen = function(){
+    ws.send(JSON.stringify({
+        action: "retrieve",
+        request_id: new Date().getTime(), pk: 1
+    }))
+}
+ws.onmessage = function(e){
+    console.log(e.data)
+}
+"""
